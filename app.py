@@ -37,37 +37,38 @@ if archivo_excel:
             try:
                 funciones_aplicadas = []
 
-                if f_ceros:
-                    quitar_ceros_en_exp(ws)
-                    funciones_aplicadas.append("Quitar ceros en Exp.")
-                if f_situacion:
-                    eliminar_fe_en_situacion(ws)
-                    funciones_aplicadas.append("Unificar situación (fe:)")
-                if f_descomponer:
-                    descomponer_columna_exp(ws)
-                    funciones_aplicadas.append("Descomponer columna Exp.")
-                if f_id:
-                    generar_ID(ws)
-                    funciones_aplicadas.append("Generar ID")
+                with st.spinner("Procesando... ⏳"):
+                    if f_ceros:
+                        quitar_ceros_en_exp(ws)
+                        funciones_aplicadas.append("Quitar ceros en Exp.")
+                    if f_situacion:
+                        eliminar_fe_en_situacion(ws)
+                        funciones_aplicadas.append("Unificar situación (fe:)")
+                    if f_descomponer:
+                        descomponer_columna_exp(ws)
+                        funciones_aplicadas.append("Descomponer columna Exp.")
+                    if f_id:
+                        generar_ID(ws)
+                        funciones_aplicadas.append("Generar ID")
 
-                if not funciones_aplicadas:
-                    st.warning("⚠️ Debes seleccionar al menos una función.")
-                else:
-                    # Guardar archivo en memoria
-                    output = BytesIO()
-                    wb.save(output)
-                    output.seek(0)
+                    if not funciones_aplicadas:
+                        st.warning("⚠️ Debes seleccionar al menos una función.")
+                    else:
+                        # Guardar archivo en memoria
+                        output = BytesIO()
+                        wb.save(output)
+                        output.seek(0)
 
-                    st.success("✅ Procesamiento completado.")
-                    st.markdown("Funciones aplicadas:")
-                    st.markdown("• " + "\n• ".join(funciones_aplicadas))
+                        st.success("✅ Procesamiento completado.")
+                        st.markdown("Funciones aplicadas:")
+                        st.markdown("• " + "\n• ".join(funciones_aplicadas))
 
-                    st.download_button(
-                        label="📥 Descargar archivo procesado",
-                        data=output,
-                        file_name="procesado.xlsx",
-                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                    )
+                        st.download_button(
+                            label="📥 Descargar archivo procesado",
+                            data=output,
+                            file_name="procesado.xlsx",
+                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        )
 
             except Exception as e:
                 st.error(f"❌ Error: {e}")
