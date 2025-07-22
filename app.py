@@ -36,9 +36,6 @@ if archivo_excel:
         f_descomponer = st.checkbox("Descomponer columna Exp.")
         f_id = st.checkbox("Generar ID")
 
-        # Campo para ingresar nombre de archivo de salida
-        nombre_archivo_usuario = st.text_input("💾 Nombre del archivo de salida", value=nombre_archivo_original)
-
         if st.button("✅ Procesar"):
             try:
                 funciones_aplicadas = []
