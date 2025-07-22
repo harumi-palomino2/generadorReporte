@@ -13,6 +13,7 @@ st.markdown("Sube un archivo `.xlsx`, elige una hoja y aplica las funciones dese
 archivo_excel = st.file_uploader("📤 Subir archivo Excel", type=["xlsx"])
 
 if archivo_excel:
+    nombre_archivo_original = archivo_excel.name
     wb = load_workbook(filename=archivo_excel)
     hojas = wb.sheetnames
     hoja = st.selectbox("📑 Selecciona una hoja", hojas)
@@ -20,9 +21,11 @@ if archivo_excel:
     if hoja:
         ws_origen = wb[hoja]
 
-        # Copiar hoja original
+        # Si ya existe la hoja 'procesado', eliminarla
         if "procesado" in wb.sheetnames:
             del wb["procesado"]
+
+        # Copiar hoja original y renombrar como 'procesado'
         ws = wb.copy_worksheet(ws_origen)
         ws.title = "procesado"
 
@@ -32,6 +35,9 @@ if archivo_excel:
         f_situacion = st.checkbox("Unificar situación (fe:)")
         f_descomponer = st.checkbox("Descomponer columna Exp.")
         f_id = st.checkbox("Generar ID")
+
+        # Campo para ingresar nombre de archivo de salida
+        nombre_archivo_usuario = st.text_input("💾 Nombre del archivo de salida", value=nombre_archivo_original)
 
         if st.button("✅ Procesar"):
             try:
@@ -54,7 +60,7 @@ if archivo_excel:
                     if not funciones_aplicadas:
                         st.warning("⚠️ Debes seleccionar al menos una función.")
                     else:
-                        # Guardar archivo en memoria
+                        # Guardar archivo modificado en memoria
                         output = BytesIO()
                         wb.save(output)
                         output.seek(0)
@@ -64,9 +70,9 @@ if archivo_excel:
                         st.markdown("• " + "\n• ".join(funciones_aplicadas))
 
                         st.download_button(
-                            label="📥 Descargar archivo procesado",
+                            label="📥 Descargar archivo con hoja procesada",
                             data=output,
-                            file_name="procesado.xlsx",
+                            file_name=nombre_archivo_usuario,
                             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                         )
 
