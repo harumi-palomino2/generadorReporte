@@ -69,7 +69,7 @@ if archivo_excel:
                         st.download_button(
                             label="📥 Descargar archivo con hoja procesada",
                             data=output,
-                            file_name=nombre_archivo_usuario,
+                            file_name=nombre_archivo_original,
                             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                         )
 
